@@ -1,0 +1,10 @@
+.moveto{
+    width: 100%;
+}
+.moveto label{
+    color: white !important;
+}
+
+#loading-bar-spinner{
+    display: none;
+}

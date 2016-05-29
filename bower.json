@@ -1,0 +1,22 @@
+{
+  "name": "mb",
+  "version": "1.0.0",
+  "main": "public/assets/app.css",
+  "homepage": "https://github.com/Bonome/musicBox",
+  "licence": "GPL-3.0",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "angular": "~1.5.6",
+    "angular-animate": "~1.5.6",
+    "angular-aria": "~1.5.6",
+    "angular-material": "~1.1.0-rc4-master-f0e6de9",
+    "angular-messages": "~1.5.6",
+    "angular-material-icons": "~0.7.0",
+    "angular-ui-router": "ui-router#~0.2.15",
+    "material-design-icons": "~2.2.3",
+    "angular-loading-bar": "^0.9.0"
+  }
+}
