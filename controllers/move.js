@@ -15,7 +15,7 @@ exports.move = function (req, res, next) {
             if (err) {
                 console.log(err);
             }
-            console.log(response);
+//            console.log(response);
             
         });
     };
@@ -39,7 +39,7 @@ exports.move = function (req, res, next) {
                         });
                     } else {
                         if (file.lastIndexOf('.flac') === file.length - 5 || file.lastIndexOf('.FLAC') === file.length - 5) {
-                            console.log('flac');
+//                            console.log('flac');
                             f2m.convert(
                                     file,
                                     function (data) {
