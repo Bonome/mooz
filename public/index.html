@@ -20,13 +20,14 @@
 
         <div flex layout="column" tabIndex="-1" role="main" class="">
             <md-toolbar layout="row" class="md-whiteframe-z1">
+                <form>
+                    <md-input-container class="moveto">
+                        <label>Directory target name</label>
+                        <input ng-model="appCtrl.dest">
+                    </md-input-container>
 
-                <md-input-container class="moveto">
-                    <label>Directory target name</label>
-                    <input ng-model="appCtrl.dest">
-                </md-input-container>
-
-                <md-button ng-click="appCtrl.move()">Move</md-button>
+                    <md-button ng-click="appCtrl.move()">Move</md-button>
+                </form>
             </md-toolbar>
             <md-content layout="row" flex>
                 <div layout="column" flex>

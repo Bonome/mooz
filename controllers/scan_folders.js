@@ -9,7 +9,7 @@ var utils = require('../controllers/utils');
 
 exports.scan = function (req, res) {
   var dirPath = config.downPath;
-
+console.log(dirPath);
   var walk = function (dir, done) {
     var results = [];
     fs.readdir(dir, function (err, list) {
