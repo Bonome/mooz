@@ -16,7 +16,7 @@ exports.move = function (req, res, next) {
                 console.log(err);
             }
             console.log(response);
-            res.json(true);
+            
         });
     };
     var walk = function (dir, done) {
