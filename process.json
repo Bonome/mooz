@@ -1,0 +1,12 @@
+{
+  "apps" : [
+	{
+		"name"	      : "mooz",
+    		"script"      : "bin/www",
+    		"watch"       : false,
+		"exec_mode"   : "cluster",
+		"instances"   : 1,
+		"combine_logs": true
+  	}
+  ]
+}
