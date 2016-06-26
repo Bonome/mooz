@@ -5,7 +5,7 @@
     		"script"      : "bin/www",
     		"watch"       : false,
 		"exec_mode"   : "cluster",
-		"instances"   : 1,
+		"instances"   : 2,
 		"combine_logs": true
   	}
   ]
