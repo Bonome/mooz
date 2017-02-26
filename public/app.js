@@ -18,6 +18,7 @@
     function AppController($http) {
         var self = this;
         self.target = '';
+        self.downpath = '';
         self.directories = [];
         
         (function() {
@@ -25,9 +26,13 @@
             $http.get('destination').success(function (target) {
                 self.target = target;
             });
+            $http.get('dowpath').success(function (downpath) {
+                self.downpath = downpath;
+            });
         })();
         
         self.move = move;
+        self.propDest = propDest;
         
         function move() {
             var data = {
@@ -40,6 +45,13 @@
                 }
             });
         }
+        
+        function propDest(){
+            var lengthDownpath = self.downpath.length;
+            var prop = self.src.substring(lengthDownpath);
+            self.dest = prop;
+        }
+        
         function scan() {
             $http.get('scan').success(function (directories) {
                 self.directories = directories;
