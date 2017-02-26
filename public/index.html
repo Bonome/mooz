@@ -32,9 +32,13 @@
             <md-content layout="row" flex>
                 <div layout="column" flex>
                     <md-radio-group ng-model="appCtrl.src">
-                        <md-radio-button ng-repeat="directory in appCtrl.directories" value="{{directory}}" class="md-primary">{{directory}}</md-radio-button>
+			<div style="margin-bottom: 10px;" ng-repeat="directory in appCtrl.directories">
+                        <md-radio-button value="{{directory}}" class="md-primary" style="margin-bottom: 0px;display:inline-block">__</md-radio-button>
+                        {{directory}}
+			<div>
                     </md-radio-group>
                 </div>
+
             </md-content>
         </div>
 

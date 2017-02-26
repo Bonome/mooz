@@ -13,7 +13,7 @@ var routes = require('./routes');
 var destination = require('./routes/destination');
 var move = require('./routes/move');
 var scan = require('./routes/scan');
-
+var downpath = require('./routes/downpath.js');
 
 var app = express();
 
@@ -40,10 +40,13 @@ app.use('/', routes);
 app.use('/destination', destination);
 app.use('/move', move);
 app.use('/scan', scan);
-
+app.use('/down', downpath);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
+
+
+
   err.status = 404;
   next(err);
 });

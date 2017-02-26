@@ -4,9 +4,7 @@ var config = require(__dirname + '/../config/config.json');
 var fs = require('fs');
 var path = require('path');
 var utils = require('../controllers/utils');
-
 //var process = require('./process_files');
-
 exports.scan = function (req, res) {
   var dirPath = config.downPath;
 console.log(dirPath);
@@ -25,6 +23,7 @@ console.log(dirPath);
             walk(file, function (err, res) {
               results = results.concat(res);
               if (!--pending) {
+		results.push(utils.getPathRef(file));
                 done(null, results);
               }
             });
