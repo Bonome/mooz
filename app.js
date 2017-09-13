@@ -12,11 +12,18 @@ var session = require('express-session');
 var routes = require('./routes');
 var destination = require('./routes/destination');
 var move = require('./routes/move');
+var remove = require('./routes/remove');
 var scan = require('./routes/scan');
 var downpath = require('./routes/downpath.js');
+var basicAuth = require('express-basic-auth')
 
 var app = express();
-
+ 
+app.use(basicAuth({
+    users: { '': '' },
+    challenge: true,
+    realm: ''
+}))
 
 
 // view engine setup
@@ -39,6 +46,7 @@ app.use(session({
 app.use('/', routes);
 app.use('/destination', destination);
 app.use('/move', move);
+app.use('/remove', remove);
 app.use('/scan', scan);
 app.use('/down', downpath);
 // catch 404 and forward to error handler

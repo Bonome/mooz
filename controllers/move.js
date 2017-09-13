@@ -1,5 +1,6 @@
 "use strict";
 
+var exec = require('child_process').exec;
 var mv = require('mv');
 var f2m = require("flac-to-mp3")
 var fs = require('fs');
@@ -19,6 +20,18 @@ exports.move = function (req, res, next) {
             
         });
     };
+    var conmoov = function (filename) {
+	var filemp3 = filename.substring(0, filename.length - 5) + '.mp3';
+console.log("./flac21mp3 \"" + req.body.src + filename + "\" \"" + req.body.dest + filemp3 + "\"");
+        exec("./flac21mp3 \"" + req.body.src + filename + "\" \"" + req.body.dest + filemp3 + "\"", function (err, stdout, stderr) {
+            if (err) {
+                console.log(err);
+            }
+//            console.log(response);
+
+        });
+    };
+
     var walk = function (dir, done) {
         var results = [];
         fs.readdir(dir, function (err, list) {
@@ -38,24 +51,12 @@ exports.move = function (req, res, next) {
                             }
                         });
                     } else {
-                        if (file.lastIndexOf('.flac') === file.length - 5 || file.lastIndexOf('.FLAC') === file.length - 5) {
-//                            console.log('flac');
-                            f2m.convert(
-                                    file,
-                                    function (data) {
-//                                        console.log(data.err.toString());
-                                        if (data.err.toString().indexOf('audio') >= 0) {
-                                            var posLastSlash = req.body.src.length;
-                                            var posDot = file.length - 5;
-                                            var filename = file.substring(posLastSlash, posDot) + '.mp3';
-                                            console.log(filename);
-                                            moov(filename);
-                                        }
-                                    }
-                            )
+			var posLastSlash = req.body.src.length;
+			var filename = file.substring(posLastSlash);
+                        //if (file.lastIndexOf('.flac') === file.length - 5 || file.lastIndexOf('.FLAC') === file.length - 5) {
+                        if (file.substring(file.length - 5) === '.flac') {
+                            conmoov(filename);
                         } else {
-                            var posLastSlash = req.body.src.length;
-                            var filename = file.substring(posLastSlash);
                             moov(filename);
                         }
                         if (!--pending) {

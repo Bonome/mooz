@@ -1,0 +1,4 @@
+#!/bin/bash
+mkdir -p "${2%/*}"; 
+avconv -i "$1" -acodec libopus -b:a 320000 -vbr on -map_metadata -0 "$2"
+

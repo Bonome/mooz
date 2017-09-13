@@ -33,8 +33,9 @@
                 <div layout="column" flex>
                     <md-radio-group ng-model="appCtrl.src" ng-click="appCtrl.propDest()">
 			<div style="margin-bottom: 10px;" ng-repeat="directory in appCtrl.directories">
-                        <md-radio-button value="{{directory}}" class="md-primary" style="margin-bottom: 0px;display:inline-block">__</md-radio-button>
+                        <md-radio-button value="{{directory}}" class="md-primary" style="margin-bottom: 0px;display:inline-block">==></md-radio-button>
                         {{directory}}
+			<button ng-click="appCtrl.delSource(directory)">DEL</button>
 			<div>
                     </md-radio-group>
                 </div>
