@@ -26,13 +26,14 @@
             $http.get('destination').success(function (target) {
                 self.target = target;
             });
-            $http.get('dowpath').success(function (downpath) {
+            $http.get('down').success(function (downpath) {
                 self.downpath = downpath;
             });
         })();
         
         self.move = move;
         self.propDest = propDest;
+	self.delSource = delSource;
         
         function move() {
             var data = {
@@ -49,8 +50,21 @@
         function propDest(){
             var lengthDownpath = self.downpath.length;
             var prop = self.src.substring(lengthDownpath);
+            prop = prop.replace(/\[.*\]/i,'');
             self.dest = prop;
         }
+
+	function delSource(source) {
+	    var data = {
+                src: source
+            }
+            $http.post('remove', data).success(function (response) {
+                if(response) {
+                    scan();
+                }
+            });
+
+	}
         
         function scan() {
             $http.get('scan').success(function (directories) {
