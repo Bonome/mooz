@@ -6,30 +6,59 @@ var f2m = require("flac-to-mp3")
 var fs = require('fs');
 var path = require('path');
 var utils = require('../controllers/utils');
+var dblite = require('dblite');
+let db = dblite('./downloads.db');
 
 var self = this;
 
 exports.move = function (req, res, next) {
+    var pile = [];
+    var concurrentMax = 1;
+    var conc = 0;
 
     var moov = function (filename) {
         mv(req.body.src + filename, req.body.dest + filename, {mkdirp: true}, function (err, response) {
             if (err) {
                 console.log(err);
             }
+            rmFromDB(req.body.src + filename);
 //            console.log(response);
             
         });
     };
-    var conmoov = function (filename) {
-	var filemp3 = filename.substring(0, filename.length - 5) + '.mp3';
-console.log("./flac21mp3 \"" + req.body.src + filename + "\" \"" + req.body.dest + filemp3 + "\"");
-        exec("./flac21mp3 \"" + req.body.src + filename + "\" \"" + req.body.dest + filemp3 + "\"", function (err, stdout, stderr) {
-            if (err) {
-                console.log(err);
-            }
-//            console.log(response);
 
-        });
+    var conmoov = function (filename) {
+	    var filemp3 = filename.substring(0, filename.length - 5) + '.mp3';
+        var conv = {
+            'from': req.body.src + filename,
+            'to': req.body.dest + filemp3,
+        };
+        pile.push(conv);
+        convertPile();
+    };
+
+    var convertPile = function() {
+        if(conc <= concurrentMax) {
+            conc++;
+            if(pile.length <= 0) {
+                return;
+            }
+            var current = pile.splice(0, 1);
+            console.log("./flac21mp3 \"" + current[0].from + "\" \"" + current[0].to + "\"");
+
+            exec("./flac21mp3 \"" + current[0].from + "\" \"" + current[0].to + "\"", function (err, stdout, stderr) {
+                if (err) {
+                    console.log(err);
+                }
+                conc--;
+                rmFromDB(current[0].from);
+                convertPile();
+           });
+        }
+    };
+
+    var rmFromDB = function (file) {
+      	db.query('delete from directories where path = ?', [file]);
     };
 
     var walk = function (dir, done) {

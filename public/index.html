@@ -20,23 +20,26 @@
 
         <div flex layout="column" tabIndex="-1" role="main" class="">
             <md-toolbar layout="row" class="md-whiteframe-z1">
-                <form>
+                <form class="fullwidth">
                     <md-input-container class="moveto">
                         <label>Directory target name</label>
                         <input ng-model="appCtrl.dest">
                     </md-input-container>
 
                     <md-button ng-click="appCtrl.move()">Move</md-button>
+                    <md-button ng-click="appCtrl.refresh()">Refresh</md-button>
+                    <md-button ng-click="appCtrl.scan()">Clean</md-button>
                 </form>
             </md-toolbar>
             <md-content layout="row" flex>
                 <div layout="column" flex>
-                    <md-radio-group ng-model="appCtrl.src" ng-click="appCtrl.propDest()">
-			<div style="margin-bottom: 10px;" ng-repeat="directory in appCtrl.directories">
-                        <md-radio-button value="{{directory}}" class="md-primary" style="margin-bottom: 0px;display:inline-block">==></md-radio-button>
-                        {{directory}}
-			<button ng-click="appCtrl.delSource(directory)">DEL</button>
-			<div>
+                    <md-radio-group ng-model="appCtrl.src" ng-click="appCtrl.propDest(directory[0])" ng-repeat="directory in appCtrl.directories">
+        			    <div style="margin-bottom: 10px;">
+                            <md-radio-button value="{{directory[1]}}" class="md-primary" style="margin-bottom: 0px;display:inline-block">==></md-radio-button>
+                            {{directory[1]}}
+                			<button ng-click="appCtrl.refresh(directory[1])">Refresh</button>
+                			<button ng-click="appCtrl.delSource(directory[1])">DEL</button>
+            			<div>
                     </md-radio-group>
                 </div>
 
