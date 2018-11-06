@@ -3,6 +3,8 @@
 var express = require('express');
 var path = require('path'); 
 var favicon = require('serve-favicon');
+var fs = require('fs');
+var dblite = require('dblite');
 
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -13,9 +15,12 @@ var routes = require('./routes');
 var destination = require('./routes/destination');
 var move = require('./routes/move');
 var remove = require('./routes/remove');
+var refresh = require('./routes/refresh');
 var scan = require('./routes/scan');
 var downpath = require('./routes/downpath.js');
+var list = require('./routes/list.js');
 var basicAuth = require('express-basic-auth')
+
 
 var app = express();
  
@@ -23,7 +28,13 @@ app.use(basicAuth({
     users: { '': '' },
     challenge: true,
     realm: ''
-}))
+}));
+
+if (!fs.existsSync('./downloads.db')) {
+    let db = dblite('./downloads.db');
+    db.query('CREATE TABLE IF NOT EXISTS directories (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT)');
+    db.close();
+}
 
 
 // view engine setup
@@ -47,8 +58,10 @@ app.use('/', routes);
 app.use('/destination', destination);
 app.use('/move', move);
 app.use('/remove', remove);
+app.use('/refresh', refresh);
 app.use('/scan', scan);
 app.use('/down', downpath);
+app.use('/dirs', list);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -76,10 +89,9 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
+	res.status('500').json({
     message: err.message,
-    error: {}
+    error: JSON.stringify(err)
   });
 });
 

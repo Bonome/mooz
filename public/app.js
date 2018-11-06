@@ -22,7 +22,7 @@
         self.directories = [];
         
         (function() {
-            scan();
+            list();
             $http.get('destination').success(function (target) {
                 self.target = target;
             });
@@ -33,43 +33,63 @@
         
         self.move = move;
         self.propDest = propDest;
-	self.delSource = delSource;
+	    self.delSource = delSource;
+	    self.scan = scan;
+	    self.refresh = refresh;
         
         function move() {
             var data = {
+        		id: self.id,
                 src: self.src,
                 dest: self.target + '/' + self.dest
             }
             $http.post('move', data).success(function (response) {
                 if(response) {
-                    scan();
+                    list();
                 }
             });
         }
         
-        function propDest(){
+        function propDest(id){
+    	    self.id = id;
             var lengthDownpath = self.downpath.length;
             var prop = self.src.substring(lengthDownpath);
             prop = prop.replace(/\[.*\]/i,'');
             self.dest = prop;
         }
 
-	function delSource(source) {
-	    var data = {
+	    function delSource(source) {
+	        var data = {
                 src: source
             }
             $http.post('remove', data).success(function (response) {
                 if(response) {
-                    scan();
+                    list();
                 }
             });
-
-	}
+    	}
         
         function scan() {
             $http.get('scan').success(function (directories) {
                 self.directories = directories;
             });
         }
+
+        function list() {
+            $http.get('dirs').success(function (directories) {
+                self.directories = directories;
+            });
+        }
+
+	    function refresh(dir) {
+	        var data = {
+                src: dir
+            }
+            $http.post('refresh', data).success(function (response) {
+                if(response) {
+                    list();
+                }
+            });
+    	}
     }
 })();
