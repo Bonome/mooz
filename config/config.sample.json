@@ -1,22 +1,11 @@
 {
     "musicPath": "/home/user/Musique",
-    "development": {
-        "username": "userdb",
-        "password": "mdpdb",
-        "database": "musicboxdevdb",
-        "host": "127.0.0.1",
-        "dialect": "mysql",
-        "dialectOptions": {
-            "unixSocket": "/var/run/mysqld/mysqld.sock"
-        },
-        "port": "3306"
+    "downPath": "/media/disk/downloads/",
+    "auth": {
+        "users": {"UserName": "P4ssw°rd"},
+        "realm": "Abc123xYZzz"
     },
-    "production": {
-        "username": "userdb",
-        "password": "mdpdb",
-        "database": "musicboxproddb",
-        "host": "127.0.0.1",
-        "dialect": "mysql",
-        "port": "3306"
+    "app": {
+        "key": "abcefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuv"
     }
 }
