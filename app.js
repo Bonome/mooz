@@ -10,6 +10,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var basicAuth = require('express-basic-auth')
+
+var config = require(__dirname + '/config/config.json');
 
 var routes = require('./routes');
 var destination = require('./routes/destination');
@@ -19,15 +22,14 @@ var refresh = require('./routes/refresh');
 var scan = require('./routes/scan');
 var downpath = require('./routes/downpath.js');
 var list = require('./routes/list.js');
-var basicAuth = require('express-basic-auth')
 
 
 var app = express();
- 
+
 app.use(basicAuth({
-    users: { '': '' },
+    users: config.auth.users,
     challenge: true,
-    realm: ''
+    realm: config.auth.realm
 }));
 
 if (!fs.existsSync('./downloads.db')) {
@@ -49,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 app.use(session({
-  secret: 'zomaareefdssdnstukjetekstDatjenietzomaarbedenkt',
+  secret: config.app.key,
   resave: true,
   saveUninitialized: true
 }));
