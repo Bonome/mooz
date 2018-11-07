@@ -2,7 +2,6 @@
 
 var exec = require('child_process').exec;
 var mv = require('mv');
-var f2m = require("flac-to-mp3")
 var fs = require('fs');
 var path = require('path');
 var utils = require('../controllers/utils');
