@@ -23,9 +23,8 @@ var scan = require('./routes/scan');
 var downpath = require('./routes/downpath.js');
 var list = require('./routes/list.js');
 
-
 var app = express();
-
+ 
 app.use(basicAuth({
     users: config.auth.users,
     challenge: true,
