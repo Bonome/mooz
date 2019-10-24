@@ -1,13 +1,21 @@
 (function () {
-    var app = angular.module('mbApp', ['ngMaterial','angular-loading-bar'])
+    var app = angular.module('mbApp', ['ngMaterial','angular-loading-bar', 'LocalStorageModule', 'btford.socket-io'])
             .config(function ($mdThemingProvider) {
 
 
                 $mdThemingProvider.theme('default')
-                        .primaryPalette('deep-orange')
+                        .primaryPalette('deep-orange', {'default': '900'})
                         .accentPalette('grey');
 
-            }).controller('AppController', ['$http', AppController]);
+            });
+
+    app.service('SocketService', ['socketFactory', function SocketService(socketFactory) {
+        return socketFactory({
+            ioSocket: io.connect('https://mooz.dak.li')
+        });
+    }]);
+
+    app.controller('AppController', ['$http', 'SocketService', AppController]);
 
     /**
      * Main Controller for the Angular Material Starter App
@@ -15,11 +23,14 @@
      * @param $log
      * @constructor
      */
-    function AppController($http) {
+    function AppController($http, SocketService) {
         var self = this;
         self.target = '';
         self.downpath = '';
         self.directories = [];
+        self.array = [];
+        self.message = {};
+        SocketService.emit('room', { roomId: "temp" });
         
         (function() {
             list();
@@ -29,8 +40,9 @@
             $http.get('down').success(function (downpath) {
                 self.downpath = downpath;
             });
+
         })();
-        
+
         self.move = move;
         self.propDest = propDest;
 	    self.delSource = delSource;
@@ -91,5 +103,9 @@
                 }
             });
     	}
+
+        SocketService.on('message', function(msg) {
+            self.array.push(msg)
+        });
     }
 })();

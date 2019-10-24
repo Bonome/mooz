@@ -20,6 +20,12 @@ exports.move = function (req, res, next) {
             if (err) {
                 console.log(err);
             }
+            console.log('emitter');
+            //if(req.io) {
+                //console.log(req.io);
+               req.io.emit('moved', {roomId:'temp', data: filename, date: new Date() });
+               req.emitter.emit('moved', {roomId:'temp', data: filename, date: new Date() });
+            //}
             rmFromDB(req.body.src + filename);
 //            console.log(response);
             
@@ -49,6 +55,7 @@ exports.move = function (req, res, next) {
                 if (err) {
                     console.log(err);
                 }
+                req.emitter.emit('moved', {roomId:'temp', data: filename, date: new Date() });
                 conc--;
                 rmFromDB(current[0].from);
                 convertPile();

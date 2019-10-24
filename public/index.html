@@ -8,9 +8,9 @@
         <meta name="description" content="">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-        <link rel="stylesheet" href="./bower_components/angular-material/angular-material.min.css"/>
-        <link rel="stylesheet" href="./bower_components/angular-loading-bar/build/loading-bar.min.css"/>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+        <link rel="stylesheet" href="./lib/angular-material/angular-material.min.css"/>
+        <link rel="stylesheet" href="./lib/angular-loading-bar/build/loading-bar.min.css"/>
         <link rel="stylesheet" href="assets/app.css"/>
 
     </head>
@@ -30,6 +30,18 @@
                     <md-button ng-click="appCtrl.refresh()">Refresh</md-button>
                     <md-button ng-click="appCtrl.scan()">Clean</md-button>
                 </form>
+                <md-list flex style="position: fixed;right: 15px;top: 147px;background-color: #E3E3E3;padding-top: 0;font-size: 12px;" >
+                    <md-subheader class="md-no-sticky">Updated List</md-subheader>
+                    <md-list-item class="" ng-repeat="item in appCtrl.array" ng-click="null">
+
+                        <div class="md-list-item-text" layout="column">
+                            {{ item.data }}
+                            {{ item.date | date:'medium'}}
+
+                        </div>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
             </md-toolbar>
             <md-content layout="row" flex>
                 <div layout="column" flex>
@@ -46,11 +58,16 @@
             </md-content>
         </div>
 
-        <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
-        <script type="text/javascript" src="/bower_components/angular-animate/angular-animate.min.js"></script>
-        <script type="text/javascript" src="/bower_components/angular-aria/angular-aria.js"></script>
-        <script type="text/javascript" src="/bower_components/angular-material/angular-material.min.js"></script>
-        <script type="text/javascript" src="/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+        <script type="text/javascript" src="/lib/angular/angular.min.js"></script>
+        <script type="text/javascript" src="/lib/angular-animate/angular-animate.min.js"></script>
+        <script type="text/javascript" src="/lib/angular-aria/angular-aria.js"></script>
+        <script type="text/javascript" src="/lib/angular-material/angular-material.min.js"></script>
+        <script type="text/javascript" src="/lib/angular-loading-bar/build/loading-bar.min.js"></script>
+
+        <script src="lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
+        <script src="lib/socket.io-client/socket.io.js"></script>
+        <script src="https://mooz.dak.li/socket.io/socket.io.js"></script>
+        <script src="lib/angular-socket-io/socket.min.js"></script>
 
         <script type="text/javascript" src="app.js"></script>
 

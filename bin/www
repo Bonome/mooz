@@ -7,6 +7,17 @@
 var app = require('../app');
 var debug = require('debug')('mb:server');
 var http = require('http');
+const events = require('events');
+
+var routes = require('../routes');
+var destination = require('../routes/destination');
+var move = require('../routes/move');
+var remove = require('../routes/remove');
+var refresh = require('../routes/refresh');
+var scan = require('../routes/scan');
+var downpath = require('../routes/downpath.js');
+var list = require('../routes/list.js');
+
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +31,54 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+var io = require('socket.io')(server);
+
+    var eventEmitter = new events.EventEmitter();
+app.use(function(req, res, next) {
+        console.log('add io on fly');
+        req.io = io;
+        req.emitter = eventEmitter;
+        next();
+});
+
+
+
+app.use('/', routes);
+app.use('/destination', destination);
+app.use('/move', move);
+app.use('/remove', remove);
+app.use('/refresh', refresh);
+app.use('/scan', scan);
+app.use('/down', downpath);
+app.use('/dirs', list);
+
+
+io.on('connection', function(client) {
+    client.on('disconnect', function() {
+        console.log("disconnected")
+    });
+    
+    client.on('room', function(data) {
+        console.log(data);
+        client.join(data.roomId);
+        console.log(' Client joined the room and client id is '+ client.id);
+
+    });
+    client.on('toBackEnd', function(data) {
+        client.in(data.roomId).emit('message', data);
+    });
+
+    client.on('moved', (data) => { // occurs when an event is thrown
+        console.log('moved ok in server.js');
+        client.in('temp').emit('message', data);
+    });
+    eventEmitter.on('moved', (data) => { // occurs when an event is thrown
+        console.log('emit from socket');
+        client.in('temp').emit('message', data);
+    });
+    console.log('socket connection');
+});
 
 /**
  * Listen on provided port, on all network interfaces.
